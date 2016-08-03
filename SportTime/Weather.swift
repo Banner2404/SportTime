@@ -23,10 +23,11 @@ class Weather: NSObject {
             
             
             self.cachedData = self.getDataFrom(json) //TODO: make caching
+            self.cachedData.copyFirstDay()
             
             for i in 0...30 {
                 
-                print("time: \(self.cachedData.time[i]), temp: \(self.cachedData.temperature[i]) , wind: \(self.cachedData.windSpeed[i]) ")
+                print("time: \(self.cachedData.time[i]), temp: \(self.cachedData.temperature[i]) , wind: \(self.cachedData.windSpeed[i]),rain: \(self.cachedData.rainChanse[i]) % ")
                 
             }
             
@@ -61,7 +62,7 @@ class Weather: NSObject {
 //        }
 //    }
     
-    private func getHourlyWeather(onSuccess onSuccess: (JSON) -> ()) {
+    private func getHourlyWeather(onSuccess: (JSON) -> ()) {
         
         let urlString = "http://api.wunderground.com/api/892b2fb5ca02a3b4/hourly10day/lang:RU/q/52.7,25.3.json"
         
@@ -110,8 +111,26 @@ class Weather: NSObject {
         data.windSpeed = getWindSpeedFrom(json)
         data.time = getTimeFrom(json)
         data.temperature = getTemperatureFrom(json)
+        data.rainChanse = getRainChanseFrom(json)
         
         return data
+        
+    }
+    
+    private func getRainChanseFrom(json: JSON) -> [Int] {
+        
+        var result = [Int]()
+        
+        for i in 0..<48 {
+            
+            let temp = json["hourly_forecast"][i]["pop"].intValue
+            
+            result.append(temp)
+            
+        }
+        
+        return result
+
         
     }
     
@@ -173,12 +192,27 @@ extension Weather {
         var time: [Int]
         var temperature: [Int]
         var windSpeed: [Int]
+        var rainChanse: [Int]
         
         init() {
             
             time = [Int]()
             temperature = [Int]()
             windSpeed = [Int]()
+            rainChanse = [Int]()
+            
+        }
+        
+        mutating func copyFirstDay() {
+            
+            var temp = time[0] - 1
+            if temp < 0 {
+                temp += 24
+            }
+            self.time.insert(temp , atIndex: 0)
+            self.temperature.insert(temperature[0], atIndex: 0)
+            self.windSpeed.insert(windSpeed[0], atIndex: 0)
+            self.rainChanse.insert(rainChanse[0], atIndex: 0)
             
         }
 
@@ -187,21 +221,21 @@ extension Weather {
     
 }
 
-func + (a: Weather.WeatherData, b: Weather.WeatherData) -> Weather.WeatherData {
-    
-    var c = Weather.WeatherData()
-    
-    c.time = a.time + b.time
-    c.temperature = a.temperature + b.temperature
-    c.windSpeed = a.windSpeed + b.windSpeed
-    
-    return c
-}
-
-func += (inout a: Weather.WeatherData, b: Weather.WeatherData) {
-    
-    a = a + b
-    
-}
+//func + (a: Weather.WeatherData, b: Weather.WeatherData) -> Weather.WeatherData {
+//    
+//    var c = Weather.WeatherData()
+//    
+//    c.time = a.time + b.time
+//    c.temperature = a.temperature + b.temperature
+//    c.windSpeed = a.windSpeed + b.windSpeed
+//    
+//    return c
+//}
+//
+//func += (inout a: Weather.WeatherData, b: Weather.WeatherData) {
+//    
+//    a = a + b
+//    
+//}
 
 

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C3E0301F1EBC7945DE90B6AB /* Pods_SportTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73CA07BD43A6A41EECB10CBB /* Pods_SportTime.framework */; };
+		D13A8FCF1D5273D9004C6769 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A8FCE1D5273D9004C6769 /* SettingsViewController.swift */; };
 		D1D8A5261D51DF87004CFB3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D8A5251D51DF87004CFB3C /* AppDelegate.swift */; };
 		D1D8A5281D51DF87004CFB3C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D8A5271D51DF87004CFB3C /* ViewController.swift */; };
 		D1D8A52B1D51DF87004CFB3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1D8A5291D51DF87004CFB3C /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* Begin PBXFileReference section */
 		73CA07BD43A6A41EECB10CBB /* Pods_SportTime.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SportTime.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDE788476964D3856A0316BF /* Pods-SportTime.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SportTime.release.xcconfig"; path = "Pods/Target Support Files/Pods-SportTime/Pods-SportTime.release.xcconfig"; sourceTree = "<group>"; };
+		D13A8FCE1D5273D9004C6769 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		D1D8A5221D51DF87004CFB3C /* SportTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SportTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1D8A5251D51DF87004CFB3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D1D8A5271D51DF87004CFB3C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				D1D8A5251D51DF87004CFB3C /* AppDelegate.swift */,
 				D1D8A5271D51DF87004CFB3C /* ViewController.swift */,
 				D1D8A5371D51E1C9004CFB3C /* Weather.swift */,
+				D13A8FCE1D5273D9004C6769 /* SettingsViewController.swift */,
 				D1D8A5291D51DF87004CFB3C /* Main.storyboard */,
 				D1D8A52C1D51DF87004CFB3C /* Assets.xcassets */,
 				D1D8A52E1D51DF87004CFB3C /* LaunchScreen.storyboard */,
@@ -217,6 +220,7 @@
 				D1D8A5281D51DF87004CFB3C /* ViewController.swift in Sources */,
 				D1D8A5381D51E1C9004CFB3C /* Weather.swift in Sources */,
 				D1D8A5261D51DF87004CFB3C /* AppDelegate.swift in Sources */,
+				D13A8FCF1D5273D9004C6769 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,6 +334,7 @@
 			baseConfigurationReference = D21BFE701A7B6759127B8D24 /* Pods-SportTime.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SportTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SobEv.SportTime;
@@ -342,6 +347,7 @@
 			baseConfigurationReference = CDE788476964D3856A0316BF /* Pods-SportTime.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SportTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = SobEv.SportTime;
