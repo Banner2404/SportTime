@@ -8,13 +8,20 @@
 
 import UIKit
 
-class ParametersViewController: UITableViewController {
+class ParametersViewController: UITableViewController, SettingsDelegate {
 
     let settings = Settings.sharedSettings
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        settings.delegate = self
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        
+        settings.update()
         
     }
 
@@ -38,69 +45,62 @@ class ParametersViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        var filtered: [Priority]
-        
         if section == 0 {
-            filtered = settings.priority.filter({ $0.order != Settings.InactiveOrder })
+            return settings.active.count
         } else {
-            filtered = settings.priority.filter({ $0.order == Settings.InactiveOrder })
+            return settings.passive.count
         }
         
-        return filtered.count
     }
-
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var identifier = ""
+        var data = Settings.Data(max: 0, min: 0, order: 0, identifier: "")
         
         switch indexPath.section {
         case 0:
-            identifier = settings.priority[indexPath.row].identifier
+            data = settings.active[indexPath.row]
         case 1:
-            let subarr = settings.priority.filter { $0.order == Settings.InactiveOrder }
-            identifier = subarr[indexPath.row].identifier
+            data = settings.passive[indexPath.row]
         default:
             break
         }
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(data.identifier, forIndexPath: indexPath)
+        
+        let textFieldMin = cell.viewWithTag(1) as! UITextField
+        textFieldMin.text = String(data.min)
+        
+        let textFieldMax = cell.viewWithTag(2) as! UITextField
+        textFieldMax.text = String(data.max)
 
+        
         return cell
     }
     
-    //MARK: - Actions
-    
-    @IBAction func actionEditButton(sender: UIBarButtonItem) {
-        
-        tableView.editing = !tableView.editing
-        
-    }
-
-    
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
+
         return true
     }
- 
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
     
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
+        
+        var data: Settings.Data
+        
+        if fromIndexPath.section == 0 {
+            data = settings.active.removeAtIndex(fromIndexPath.row)
+        } else {
+            data = settings.passive.removeAtIndex(fromIndexPath.row)
+        }
+        
+        if toIndexPath.section == 0 {
+            settings.active.insert(data, atIndex: toIndexPath.row)
+        } else {
+            settings.passive.insert(data, atIndex: toIndexPath.row)
+        }
+        
     }
     
 
@@ -111,15 +111,62 @@ class ParametersViewController: UITableViewController {
         return true
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    //MARK: - SettingsDelegate
+    
+    func getActive() -> [Settings.Data] {
+        
+        var active = settings.active
+        
+        for i in 0..<active.count {
+            
+            active[i].order = i
+            
+            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0))!
+            let textFieldMin = cell.viewWithTag(1) as! UITextField
+            active[i].min = Int(textFieldMin.text!)!
+            
+            let textFieldMax = cell.viewWithTag(2) as! UITextField
+            active[i].max = Int(textFieldMax.text!)!
+            
+        }
+        
+        return active
+        
     }
-    */
+
+    func getPassive() -> [Settings.Data] {
+        
+        var passive = settings.passive
+        
+        for i in 0..<passive.count {
+            
+            passive[i].order = Settings.InactiveOrder
+            
+            let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 1))!
+            let textFieldMin = cell.viewWithTag(1) as! UITextField
+            passive[i].min = Int(textFieldMin.text!)!
+            
+            let textFieldMax = cell.viewWithTag(2) as! UITextField
+            passive[i].max = Int(textFieldMax.text!)!
+        }
+
+        
+        return passive
+        
+    }
+    
+    //MARK: - Actions
+    
+    @IBAction func actionEditButton(sender: UIBarButtonItem) {
+        
+        tableView.editing = !tableView.editing
+        view.endEditing(true)
+        
+        
+    }
+    
+    func actionBackButton() {
+        
+    }
 
 }

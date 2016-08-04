@@ -13,24 +13,23 @@ class Settings: NSObject {
     static let tempID = "temperatureCell"
     static let windID = "windCell"
     static let rainID = "rainCell"
+    static var keys: [String] {
+        return [tempID, windID, rainID]
+    }
     static let InactiveOrder = 999
     static let sharedSettings = Settings()
     weak var delegate: SettingsDelegate?
     
     //TODO: add time
     
-    var temperature: Data
-    var windSpeed: Data
-    var rainChanse: Data
+//    var temperature: Data
+//    var windSpeed: Data
+//    var rainChanse: Data
     
-    var priority = [Priority]()
+    var active = [Data]()
+    var passive = [Data]()
     
     override init() {
-        
-        temperature = Data(max: 30, min: 20, order: 2, identifier: Settings.tempID)
-        windSpeed = Data(max: 30, min: 20, order: 1, identifier: Settings.windID)
-        rainChanse = Data(max: 30, min: 20, order: 0, identifier: Settings.rainID)
-        
         super.init()
         update()
     }
@@ -38,13 +37,11 @@ class Settings: NSObject {
     func update() {
         
         if delegate != nil {
+                        
+            active = delegate!.getActive()
+            passive = delegate!.getPassive()
             
-            temperature = (delegate?.getTemperature())!
-            windSpeed = (delegate?.getWindSpeed())!
-            rainChanse = (delegate?.getRainChanse())!
-            
-            priority = [temperature, windSpeed, rainChanse]
-            priority.sortInPlace{ $0.order > $1.order }
+            active.sortInPlace{ $0.order < $1.order }
             
             saveSettings()
 
@@ -52,6 +49,9 @@ class Settings: NSObject {
             
             loadSettings()
         }
+        
+        print(active)
+        print(passive)
 
         
     }
@@ -62,42 +62,43 @@ class Settings: NSObject {
         
         let defautls = NSUserDefaults.standardUserDefaults()
         
-        defautls.setInteger(temperature.min, forKey: "tempMin")
-        defautls.setInteger(temperature.max, forKey: "tempMax")
-        defautls.setInteger(temperature.order, forKey: "tempOrder")
-        
-        defautls.setInteger(windSpeed.min, forKey: "windMin")
-        defautls.setInteger(windSpeed.max, forKey: "windMax")
-        defautls.setInteger(windSpeed.order, forKey: "windOrder")
+        for element in active + passive {
+            
+            let key = element.identifier
+            let kMax = key + "max"
+            let kMin = key + "min"
+            let kOrder = key + "order"
+            
+            defautls.setInteger(element.max, forKey: kMax)
+            defautls.setInteger(element.min, forKey: kMin)
+            defautls.setInteger(element.order, forKey: kOrder)
 
-        defautls.setInteger(rainChanse.min, forKey: "rainMin")
-        defautls.setInteger(rainChanse.max, forKey: "rainMax")
-        defautls.setInteger(rainChanse.order, forKey: "rainOrder")
-        
+            
+        }
         
     }
     
     private func loadSettings() {
-        
+        //TODO: first load
         let defautls = NSUserDefaults.standardUserDefaults()
         
-        let tempMin = defautls.integerForKey("tempMin")
-        let tempMax = defautls.integerForKey("tempMax")
-        let tempOrder = defautls.integerForKey("tempOrder")
+        var active = [Data]()
         
-        let windMin = defautls.integerForKey("windMin")
-        let windMax = defautls.integerForKey("windMax")
-        let windOrder = defautls.integerForKey("windOrder")
+        for key in Settings.keys {
+            
+            let max = defautls.integerForKey(key + "max")
+            let min = defautls.integerForKey(key + "min")
+            let order = defautls.integerForKey(key + "order")
+            
+            let data = Data(max: max, min: min, order: order, identifier: key)
+            if data.order != Settings.InactiveOrder {
+                active.append(data)
+            } else {
+                passive.append(data)
+            }
+        }
         
-        let rainMin = defautls.integerForKey("rainMin")
-        let rainMax = defautls.integerForKey("rainMax")
-        let rainOrder = defautls.integerForKey("rainOrder")
-
-        temperature = Data(max: tempMax, min: tempMin, order: tempOrder, identifier: Settings.tempID)
-        windSpeed = Data(max: windMax, min: windMin, order: windOrder, identifier: Settings.windID)
-        rainChanse = Data(max: rainMax, min: rainMin, order: rainOrder, identifier: Settings.rainID)
-        
-        priority = [temperature, windSpeed, rainChanse].sort{ $0.order < $1.order }
+        self.active = active.sort{ $0.order < $1.order }
         
     }
     
@@ -106,21 +107,13 @@ class Settings: NSObject {
 
 protocol SettingsDelegate: class {
     
-    func getTemperature() -> Settings.Data
-    func getWindSpeed() -> Settings.Data
-    func getRainChanse() -> Settings.Data
-    
+    func getActive() -> [Settings.Data]
+    func getPassive() -> [Settings.Data]
 }
 
-protocol Priority {
-    
-    var order: Int { get set }
-    var identifier: String { get }
-    
-}
 extension Settings {
     
-    struct Data: Priority {
+    struct Data {
         
         var max: Int
         var min: Int
