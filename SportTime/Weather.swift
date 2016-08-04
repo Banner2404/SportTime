@@ -41,26 +41,6 @@ class Weather: NSObject {
     
     //MARK: - Getting data from server
     
-//    private func getCurrentWeather(onSuccess onSuccess: (JSON) -> ()) {
-//        
-//        let urlString = "http://api.wunderground.com/api/892b2fb5ca02a3b4/conditions/lang:RU/q/52.7,25.3.json"
-//        
-//        Alamofire.request(.GET, urlString).responseJSON { response in
-//
-//            if let json = response.result.value {
-//                
-//                let weatherJSON = JSON(json)
-//                
-//                onSuccess(weatherJSON)
-//                
-//            } else if let error = response.result.error {
-//                
-//                print(error.localizedDescription)
-//                
-//            }
-//            
-//        }
-//    }
     
     private func getHourlyWeather(onSuccess: (JSON) -> ()) {
         
@@ -85,25 +65,7 @@ class Weather: NSObject {
     }
     
     //MARK: - Parsing
-    
-//    private func getCurrentDataFrom(json: JSON) -> WeatherData {
-//        
-//        var data = WeatherData()
-//        
-//        var time = json["current_observation"]["local_time_rfc822"].stringValue
-//
-//        time = time.componentsSeparatedByString(":")[0]
-//        time = time.componentsSeparatedByString(" ").last!
-//
-//        data.time.append(Int(time)!)
-//        
-//        data.temperature.append(json["current_observation"]["temp_c"].int!)
-//        data.windSpeed.append(json["current_observation"]["wind_kph"].int!)
-//        
-//        return data
-//        
-//    }
-    
+
     private func getDataFrom(json: JSON) -> WeatherData  {
         
         var data = WeatherData()
