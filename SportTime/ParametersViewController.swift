@@ -74,12 +74,19 @@ class ParametersViewController: UITableViewController, SettingsDelegate, UITextF
         }
         
         let cell = tableView.dequeueReusableCellWithIdentifier(data.identifier, forIndexPath: indexPath)
+        if let slider = cell.viewWithTag(3) as? UISlider {
+            
+            slider.value = Float(data.min + data.max) / 2
+            
+        } else {
+            
+            let textFieldMin = cell.viewWithTag(1) as! UITextField
+            textFieldMin.text = String(data.min)
+            
+            let textFieldMax = cell.viewWithTag(2) as! UITextField
+            textFieldMax.text = String(data.max)
+        }
         
-        let textFieldMin = cell.viewWithTag(1) as! UITextField
-        textFieldMin.text = String(data.min)
-        
-        let textFieldMax = cell.viewWithTag(2) as! UITextField
-        textFieldMax.text = String(data.max)
 
         
         return cell
@@ -170,11 +177,22 @@ class ParametersViewController: UITableViewController, SettingsDelegate, UITextF
         
         let cell = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: row, inSection: section))!
         
-        let textFieldMin = cell.viewWithTag(1) as! UITextField
-        var min = Int(textFieldMin.text!) ?? 0
+        var min = 0
+        var max = 0
         
-        let textFieldMax = cell.viewWithTag(2) as! UITextField
-        var max = Int(textFieldMax.text!) ?? 0
+        if let slider = cell.viewWithTag(3) as? UISlider {
+            
+            min = Int(slider.value) - 30
+            max = Int(slider.value) + 30
+            
+        } else {
+            
+            let textFieldMin = cell.viewWithTag(1) as! UITextField
+            min = Int(textFieldMin.text!) ?? 0
+            
+            let textFieldMax = cell.viewWithTag(2) as! UITextField
+            max = Int(textFieldMax.text!) ?? 0
+        }
         
         if max < min {
             swap(&max, &min)
@@ -186,7 +204,7 @@ class ParametersViewController: UITableViewController, SettingsDelegate, UITextF
     }
     
     //MARK: - UITextFieldDelegate
-    //TODO: don't edit text field while editing
+    //TODO: 02 input fix
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         
         let nsString = textField.text! as NSString
@@ -202,7 +220,20 @@ class ParametersViewController: UITableViewController, SettingsDelegate, UITextF
             return false
         }
         
+        let cell = textField.superview?.superview?.superview as! UITableViewCell
+        
+        if tableView.indexPathForCell(cell)?.section == 0 && Int(str) > 24 {
+            
+            return false
+            
+        }
+                
         return true
+    }
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        
+        return !tableView.editing
     }
     
     //MARK: - Actions
@@ -211,7 +242,6 @@ class ParametersViewController: UITableViewController, SettingsDelegate, UITextF
         
         tableView.editing = !tableView.editing
         view.endEditing(true)
-        
         
     }
 

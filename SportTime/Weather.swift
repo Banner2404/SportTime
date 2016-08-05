@@ -27,7 +27,7 @@ class Weather: NSObject {
             
             for i in 0...30 {
                 
-                print("time: \(self.cachedData.time[i]), temp: \(self.cachedData.temperature[i]) , wind: \(self.cachedData.windSpeed[i]),rain: \(self.cachedData.rainChanse[i]) % ")
+                print("time: \(self.cachedData.time[i]), temp: \(self.cachedData.temperature[i]) , wind: \(self.cachedData.windSpeed[i]),rain: \(self.cachedData.rainChanse[i]) %, hum: \(self.cachedData.humidity[i]) %, sky: \(self.cachedData.sky[i]) % ")
                 
             }
             
@@ -74,9 +74,42 @@ class Weather: NSObject {
         data.time = getTimeFrom(json)
         data.temperature = getTemperatureFrom(json)
         data.rainChanse = getRainChanseFrom(json)
+        data.humidity = getHumidityFrom(json)
+        data.sky = getSkyFrom(json)
         
         return data
         
+    }
+    
+    private func getSkyFrom(json: JSON) -> [Int] {
+        
+        var result = [Int]()
+        
+        for i in 0..<48 {
+            
+            let temp = json["hourly_forecast"][i]["sky"].intValue
+            
+            result.append(temp)
+            
+        }
+        
+        return result
+    }
+
+    
+    private func getHumidityFrom(json: JSON) -> [Int] {
+        
+        var result = [Int]()
+        
+        for i in 0..<48 {
+            
+            let temp = json["hourly_forecast"][i]["humidity"].intValue
+            
+            result.append(temp)
+            
+        }
+        
+        return result
     }
     
     private func getRainChanseFrom(json: JSON) -> [Int] {
@@ -155,6 +188,8 @@ extension Weather {
         var temperature: [Int]
         var windSpeed: [Int]
         var rainChanse: [Int]
+        var humidity: [Int]
+        var sky: [Int]
         
         init() {
             
@@ -162,6 +197,8 @@ extension Weather {
             temperature = [Int]()
             windSpeed = [Int]()
             rainChanse = [Int]()
+            humidity = [Int]()
+            sky = [Int]()
             
         }
         
@@ -175,6 +212,8 @@ extension Weather {
             self.temperature.insert(temperature[0], atIndex: 0)
             self.windSpeed.insert(windSpeed[0], atIndex: 0)
             self.rainChanse.insert(rainChanse[0], atIndex: 0)
+            self.humidity.insert(humidity[0], atIndex: 0)
+            self.sky.insert(sky[0], atIndex: 0)
             
         }
 
@@ -182,22 +221,3 @@ extension Weather {
     
     
 }
-
-//func + (a: Weather.WeatherData, b: Weather.WeatherData) -> Weather.WeatherData {
-//    
-//    var c = Weather.WeatherData()
-//    
-//    c.time = a.time + b.time
-//    c.temperature = a.temperature + b.temperature
-//    c.windSpeed = a.windSpeed + b.windSpeed
-//    
-//    return c
-//}
-//
-//func += (inout a: Weather.WeatherData, b: Weather.WeatherData) {
-//    
-//    a = a + b
-//    
-//}
-
-

@@ -14,8 +14,10 @@ class Settings: NSObject {
     static let tempID = "temperatureCell"
     static let windID = "windCell"
     static let rainID = "rainCell"
+    static let humidityID = "humidityCell"
+    static let skyID = "skyCell"
     static var keys: [String] {
-        return [timeID, tempID, windID, rainID]
+        return [timeID, tempID, windID, rainID, humidityID, skyID]
     }
     static let InactiveOrder = 999
     static let sharedSettings = Settings()
