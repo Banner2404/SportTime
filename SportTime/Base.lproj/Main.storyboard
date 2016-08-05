@@ -25,7 +25,7 @@
         <!--Main-->
         <scene sceneID="n9x-ct-ANF">
             <objects>
-                <viewController id="JKZ-Vt-ffi" customClass="ViewController" customModule="SportTime" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="JKZ-Vt-ffi" customClass="MainViewController" customModule="SportTime" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="a2V-uP-7AH"/>
                         <viewControllerLayoutGuide type="bottom" id="PgW-Y6-WE5"/>

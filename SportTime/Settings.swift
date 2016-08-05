@@ -10,6 +10,7 @@ import UIKit
 
 class Settings: NSObject {
     
+    static let paramsCount = 6
     static let timeID = "timeCell"
     static let tempID = "temperatureCell"
     static let windID = "windCell"

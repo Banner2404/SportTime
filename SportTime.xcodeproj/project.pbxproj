@@ -10,8 +10,9 @@
 		C3E0301F1EBC7945DE90B6AB /* Pods_SportTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73CA07BD43A6A41EECB10CBB /* Pods_SportTime.framework */; };
 		D13A8FD11D527849004C6769 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A8FD01D527849004C6769 /* Settings.swift */; };
 		D13A8FD31D536182004C6769 /* ParametersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A8FD21D536182004C6769 /* ParametersViewController.swift */; };
+		D188D1631D54AF9A001D0102 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188D1621D54AF9A001D0102 /* MainViewController.swift */; };
+		D188D1651D54B093001D0102 /* ClockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188D1641D54B093001D0102 /* ClockData.swift */; };
 		D1D8A5261D51DF87004CFB3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D8A5251D51DF87004CFB3C /* AppDelegate.swift */; };
-		D1D8A5281D51DF87004CFB3C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D8A5271D51DF87004CFB3C /* ViewController.swift */; };
 		D1D8A52B1D51DF87004CFB3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1D8A5291D51DF87004CFB3C /* Main.storyboard */; };
 		D1D8A52D1D51DF87004CFB3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1D8A52C1D51DF87004CFB3C /* Assets.xcassets */; };
 		D1D8A5301D51DF87004CFB3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1D8A52E1D51DF87004CFB3C /* LaunchScreen.storyboard */; };
@@ -23,9 +24,10 @@
 		CDE788476964D3856A0316BF /* Pods-SportTime.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SportTime.release.xcconfig"; path = "Pods/Target Support Files/Pods-SportTime/Pods-SportTime.release.xcconfig"; sourceTree = "<group>"; };
 		D13A8FD01D527849004C6769 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		D13A8FD21D536182004C6769 /* ParametersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParametersViewController.swift; sourceTree = "<group>"; };
+		D188D1621D54AF9A001D0102 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		D188D1641D54B093001D0102 /* ClockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClockData.swift; sourceTree = "<group>"; };
 		D1D8A5221D51DF87004CFB3C /* SportTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SportTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1D8A5251D51DF87004CFB3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D1D8A5271D51DF87004CFB3C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D1D8A52A1D51DF87004CFB3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D1D8A52C1D51DF87004CFB3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D1D8A52F1D51DF87004CFB3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -85,9 +87,10 @@
 			isa = PBXGroup;
 			children = (
 				D1D8A5251D51DF87004CFB3C /* AppDelegate.swift */,
-				D1D8A5271D51DF87004CFB3C /* ViewController.swift */,
+				D188D1621D54AF9A001D0102 /* MainViewController.swift */,
 				D1D8A5371D51E1C9004CFB3C /* Weather.swift */,
 				D13A8FD01D527849004C6769 /* Settings.swift */,
+				D188D1641D54B093001D0102 /* ClockData.swift */,
 				D13A8FD21D536182004C6769 /* ParametersViewController.swift */,
 				D1D8A5291D51DF87004CFB3C /* Main.storyboard */,
 				D1D8A52C1D51DF87004CFB3C /* Assets.xcassets */,
@@ -220,9 +223,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1D8A5281D51DF87004CFB3C /* ViewController.swift in Sources */,
+				D188D1651D54B093001D0102 /* ClockData.swift in Sources */,
 				D1D8A5381D51E1C9004CFB3C /* Weather.swift in Sources */,
 				D13A8FD31D536182004C6769 /* ParametersViewController.swift in Sources */,
+				D188D1631D54AF9A001D0102 /* MainViewController.swift in Sources */,
 				D1D8A5261D51DF87004CFB3C /* AppDelegate.swift in Sources */,
 				D13A8FD11D527849004C6769 /* Settings.swift in Sources */,
 			);
