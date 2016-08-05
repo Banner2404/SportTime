@@ -10,11 +10,12 @@ import UIKit
 
 class Settings: NSObject {
     
+    static let timeID = "timeCell"
     static let tempID = "temperatureCell"
     static let windID = "windCell"
     static let rainID = "rainCell"
     static var keys: [String] {
-        return [tempID, windID, rainID]
+        return [timeID, tempID, windID, rainID]
     }
     static let InactiveOrder = 999
     static let sharedSettings = Settings()
@@ -22,10 +23,7 @@ class Settings: NSObject {
     
     //TODO: add time
     
-//    var temperature: Data
-//    var windSpeed: Data
-//    var rainChanse: Data
-    
+    var time = Data()
     var active = [Data]()
     var passive = [Data]()
     
@@ -37,7 +35,8 @@ class Settings: NSObject {
     func update() {
         
         if delegate != nil {
-                        
+            
+            time = delegate!.getTime()
             active = delegate!.getActive()
             passive = delegate!.getPassive()
             
@@ -62,7 +61,10 @@ class Settings: NSObject {
         
         let defautls = NSUserDefaults.standardUserDefaults()
         
-        for element in active + passive {
+        var data = active + passive
+        data.append(time)
+        
+        for element in data {
             
             let key = element.identifier
             let kMax = key + "max"
@@ -91,7 +93,9 @@ class Settings: NSObject {
             let order = defautls.integerForKey(key + "order")
             
             let data = Data(max: max, min: min, order: order, identifier: key)
-            if data.order != Settings.InactiveOrder {
+            if key == Settings.timeID {
+                time = data
+            } else if data.order != Settings.InactiveOrder {
                 active.append(data)
             } else {
                 passive.append(data)
@@ -107,6 +111,7 @@ class Settings: NSObject {
 
 protocol SettingsDelegate: class {
     
+    func getTime() -> Settings.Data
     func getActive() -> [Settings.Data]
     func getPassive() -> [Settings.Data]
 }
@@ -120,7 +125,22 @@ extension Settings {
         var order: Int
         var identifier: String
         
+        init() {
+            max = 0
+            min = 0
+            order = 0
+            identifier = ""
+        }
+        
+        init(max: Int, min: Int, order: Int, identifier: String) {
+            self.max = max
+            self.min = min
+            self.order = order
+            self.identifier = identifier
+        }
     }
+    
+    
 
 }
 
