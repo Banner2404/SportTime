@@ -24,17 +24,19 @@ class Weather: NSObject {
             
             self.cachedData = self.getDataFrom(json) //TODO: make caching
             
-            for i in 0...30 {
-                
-                print("time = \(self.cachedData[i].time), " +
-                    "temp = \(self.cachedData[i].temperature)," +
-                    "wind = \(self.cachedData[i].windSpeed)," +
-                    "rain = \(self.cachedData[i].rainChanse)," +
-                    "hum = \(self.cachedData[i].humidity)," +
-                    "sky = \(self.cachedData[i].sky),")
-                
-            }
+//            for i in 0...30 {
+//                
+//                print("time = \(self.cachedData[i].time), " +
+//                    "temp = \(self.cachedData[i].temperature)," +
+//                    "wind = \(self.cachedData[i].windSpeed)," +
+//                    "rain = \(self.cachedData[i].rainChanse)," +
+//                    "hum = \(self.cachedData[i].humidity)," +
+//                    "sky = \(self.cachedData[i].sky),")
+//                
+//            }
             
+            let clock = ClockData(weather: self.cachedData)
+            //print(clock.conditions)
             //TODO: update clock
             
             

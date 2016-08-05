@@ -10,7 +10,6 @@ import UIKit
 
 class Settings: NSObject {
     
-    static let paramsCount = 6
     static let timeID = "timeCell"
     static let tempID = "temperatureCell"
     static let windID = "windCell"
@@ -23,12 +22,14 @@ class Settings: NSObject {
     static let InactiveOrder = 999
     static let sharedSettings = Settings()
     weak var delegate: SettingsDelegate?
-    
-    //TODO: add time
-    
+        
     var time = Data()
     var active = [Data]()
     var passive = [Data]()
+    
+    var paramsCount: Int {
+        return active.count + 1
+    }
     
     override init() {
         super.init()
@@ -52,8 +53,8 @@ class Settings: NSObject {
             loadSettings()
         }
         
-        print(active)
-        print(passive)
+        //print(active)
+        //print(passive)
 
         
     }
@@ -88,6 +89,7 @@ class Settings: NSObject {
         let defautls = NSUserDefaults.standardUserDefaults()
         
         var active = [Data]()
+        var passive = [Data]()
         
         for key in Settings.keys {
             
@@ -106,6 +108,7 @@ class Settings: NSObject {
         }
         
         self.active = active.sort{ $0.order < $1.order }
+        self.passive = passive
         
     }
     
