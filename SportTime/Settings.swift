@@ -22,6 +22,7 @@ class Settings: NSObject {
     static let InactiveOrder = 999
     static let sharedSettings = Settings()
     weak var delegate: SettingsDelegate?
+    weak var updateDelegate: SettingsUpdateDelegate?
         
     var time = Data()
     var active = [Data]()
@@ -51,6 +52,12 @@ class Settings: NSObject {
         } else {
             
             loadSettings()
+        }
+        
+        if updateDelegate != nil {
+            
+            updateDelegate!.didUpdateSettings()
+            
         }
         
         //print(active)
@@ -114,6 +121,12 @@ class Settings: NSObject {
     
     
 }
+
+protocol SettingsUpdateDelegate: class {
+    
+    func didUpdateSettings()
+}
+
 
 protocol SettingsDelegate: class {
     

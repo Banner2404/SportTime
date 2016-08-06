@@ -14,6 +14,7 @@ class Weather: NSObject {
     
     var data =  [WeatherData]()
     var cachedData = [WeatherData]()
+    weak var delegate: WeatherDelegate?
     
     static let sharedWeather = Weather()
     
@@ -35,10 +36,9 @@ class Weather: NSObject {
 //                
 //            }
             
-            let clock = ClockData(weather: self.cachedData)
-            //print(clock.conditions)
-            //TODO: update clock
-            
+            if self.delegate != nil {
+                self.delegate!.didUpdateWeather()
+            }
             
         }
 
@@ -103,8 +103,18 @@ class Weather: NSObject {
         
         var w = weather
         w.insert(weather[0], atIndex: 0)
+        w[0].time -= 1
+        if w[0].time < 0 {
+            w[0].time += 24
+        }
         return w
     }
+    
+}
+
+protocol WeatherDelegate: class {
+    
+    func didUpdateWeather()
     
 }
 

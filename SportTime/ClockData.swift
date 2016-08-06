@@ -9,7 +9,7 @@
 import UIKit
 
 class ClockData: NSObject {
-
+    
     var conditions = [HourlyInfo]()
     let settings = Settings.sharedSettings
     
