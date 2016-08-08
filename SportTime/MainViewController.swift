@@ -22,6 +22,9 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
         weather.refresh()
         settings.update()
         
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.orangeColor()]
+        navigationController?.navigationBar.tintColor = UIColor.orangeColor()
+        
     }
 
     override func didReceiveMemoryWarning() {

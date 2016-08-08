@@ -13,6 +13,8 @@ class DynamicClockView: UIView {
     
     var startingTime: Int = 0
     
+    @IBInspectable var arrow: UIImage?
+    
     let boundsInset = CGFloat(40)
     var goodColor = UIColor.greenColor().CGColor
     var mediumColor = UIColor.orangeColor().CGColor
@@ -36,7 +38,7 @@ class DynamicClockView: UIView {
         let radius = rect.width / 2 - width / 2 - boundsInset
         let center = CGPoint(x: rect.width / 2, y: rect.height / 2)
         
-        let time = getTime()
+        let time = getTime().h
         self.startingTime = time
         let i = getIndexForTime(time, inClockData: clockData)
         
@@ -79,6 +81,7 @@ class DynamicClockView: UIView {
         
         drawLabels(rect)
         drawMarks(rect)
+        drawArrow(rect)
     }
     
     func drawEmpty(rect: CGRect) {
@@ -124,8 +127,8 @@ class DynamicClockView: UIView {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = .Center
             
-            let attrs = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 15)!, NSParagraphStyleAttributeName: paragraphStyle]
-            
+            let attrs = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 15)!, NSParagraphStyleAttributeName: paragraphStyle, NSForegroundColorAttributeName: UIColor.whiteColor()]
+
             label.drawInRect(labelRect, withAttributes: attrs)
             
             CGContextRestoreGState(context)
@@ -147,8 +150,8 @@ class DynamicClockView: UIView {
         for i in 0..<12 {
             
             CGContextSaveGState(context)
-            CGContextSetStrokeColorWithColor(context, UIColor.blackColor().CGColor)
-            CGContextSetLineWidth(context, 1)
+            CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
+            CGContextSetLineWidth(context, 2)
             CGContextTranslateCTM(context, center.x, center.y)
             CGContextRotateCTM(context, angle * CGFloat(i))
             CGContextMoveToPoint(context, start, 0)
@@ -159,12 +162,12 @@ class DynamicClockView: UIView {
             CGContextRestoreGState(context)
 
         }
-        CGContextSetStrokeColorWithColor(context, UIColor.blackColor().CGColor)
-        CGContextSetLineWidth(context, 2)
+        CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
+        CGContextSetLineWidth(context, 3)
         CGContextAddArc(context, center.x, center.y, radius + width / 2, 0, CGFloat(M_PI * 2), 0)
         CGContextStrokePath(context)
 
-        CGContextSetLineWidth(context, 1)
+        CGContextSetLineWidth(context, 2)
         CGContextAddArc(context, center.x, center.y, radius - width / 2, 0, CGFloat(M_PI * 2), 0)
         
         CGContextStrokePath(context)
@@ -173,12 +176,36 @@ class DynamicClockView: UIView {
         
     }
     
-    func getTime() -> Int {
+    func drawArrow(rect: CGRect) {
+        
+        let context = UIGraphicsGetCurrentContext()
+        let (hours, minutes) = getTime()
+        
+        let deltaHours = CGFloat(M_PI / 6)
+        let deltaMinutes = CGFloat(M_PI / 360)
+        
+        let angle = deltaHours * CGFloat(hours) + deltaMinutes * CGFloat(minutes)
+        
+        CGContextTranslateCTM(context, rect.midX, rect.midY)
+        CGContextRotateCTM(context, angle)
+        
+        let arrowSize = CGFloat(300)
+        let arrowRect = CGRect(x: -arrowSize / 2, y: -arrowSize / 2, width: arrowSize, height: arrowSize)
+    
+        arrow?.drawInRect(arrowRect)
+        
+    }
+    
+    func getTime() -> (h: Int, m: Int) {
         
         let date = NSDate.init(timeIntervalSinceNow: 0)
         let calendar = NSCalendar.currentCalendar()
-        let comp = calendar.component(.Hour, fromDate: date)
-        return comp
+        let unit: NSCalendarUnit = [.Hour, .Minute]
+        let comp = calendar.components(unit, fromDate: date)
+        
+        
+        
+        return (comp.hour, comp.minute)
     }
     
     func getIndexForTime(time: Int, inClockData data: [ClockData.HourlyInfo]?) -> Int? {

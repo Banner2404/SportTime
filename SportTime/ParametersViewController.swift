@@ -31,12 +31,11 @@ class ParametersViewController: UITableViewController, SettingsDelegate, UITextF
     }
 
     // MARK: - Table view data source
-
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         switch section {
-        case 0: return "Вермя"
+        case 0: return "Время"
         case 1: return "Активные"
         case 2: return "Неактивные"
         default: return ""
@@ -125,6 +124,21 @@ class ParametersViewController: UITableViewController, SettingsDelegate, UITextF
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the item to be re-orderable.
         return true
+    }
+    
+    //MARK: -UITableViewDeleagte 
+//    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+//    {
+//        let headerView = UIView(frame: CGRectMake(0, 0, tableView.bounds.size.width, 30))
+//        headerView.backgroundColor = UIColor.lightGrayColor()
+//        return headerView
+//    }
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        let header = view as! UITableViewHeaderFooterView
+        
+        header.textLabel?.textColor = UIColor.orangeColor()
+        
     }
     
     //MARK: - SettingsDelegate
@@ -234,6 +248,37 @@ class ParametersViewController: UITableViewController, SettingsDelegate, UITextF
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         
         return !tableView.editing
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        if textField.isFirstResponder() {
+            textField.resignFirstResponder()
+        }
+        
+        return true
+        
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        
+        if textField.text == "0" {
+            textField.text = ""
+        }
+        
+        textField.borderStyle = .Bezel
+        
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        
+        if textField.text == "" {
+            textField.text = "0"
+        }
+        
+        textField.borderStyle = .Line
+        textField.borderStyle = .None
+        
     }
     
     //MARK: - Actions
