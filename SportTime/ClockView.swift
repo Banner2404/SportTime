@@ -7,11 +7,8 @@
 //
 
 import UIKit
-@IBDesignable
+
 class ClockView: UIView {
-    
-    // clock arrow
-    @IBInspectable var arrow: UIImage?
     
     // data
     var clockData: [ClockData.HourlyInfo]?
@@ -230,6 +227,7 @@ class ClockView: UIView {
         let context = UIGraphicsGetCurrentContext()
         CGContextSaveGState(context)
         
+        let arrow = UIImage(named: "arrow")
         let deltaHours = CGFloat(M_PI / 6)
         let deltaMinutes = CGFloat(M_PI / 360)
         

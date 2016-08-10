@@ -8,26 +8,43 @@
 
 import UIKit
 
-class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDelegate {
+class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDelegate, UIScrollViewDelegate {
 
-    @IBOutlet weak var dynamicClockView: DynamicClockView!
     @IBOutlet weak var weatherIcon: UIImageView!
-
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var weatherLabels: [UILabel]!
+    @IBOutlet weak var pageControl: UIPageControl!
+
     let weather = Weather.sharedWeather
     let settings = Settings.sharedSettings
+    var dynamicClockView: DynamicClockView!
+    var staticClockView1: StaticClockView!
+    var staticClockView2: StaticClockView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         weather.delegate = self
         settings.updateDelegate = self
-
-        weather.refresh()
-        settings.update()
         
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.orangeColor()]
         navigationController?.navigationBar.tintColor = UIColor.orangeColor()
+        let height = scrollView.frame.height
+        let width = scrollView.frame.width
         
+        dynamicClockView = DynamicClockView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        staticClockView1 = StaticClockView(frame: CGRect(x: width, y: 0, width: width, height: height))
+        staticClockView2 = StaticClockView(frame: CGRect(x: width * 2, y: 0, width: width, height: height))
+        
+        staticClockView2.startingTime = 12
+        
+        scrollView.addSubview(dynamicClockView)
+        scrollView.addSubview(staticClockView1)
+        scrollView.addSubview(staticClockView2)
+        
+        scrollView.contentSize = CGSizeMake(width * 3, height)
+        
+        weather.refresh()
+        settings.update()
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,9 +56,13 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
         
         let clockData = ClockData(weather: weather.cachedData)
         
-        self.dynamicClockView.clockData = clockData.conditions
-        
+        dynamicClockView.clockData = clockData.conditions
+        staticClockView1.clockData = clockData.conditions
+        staticClockView2.clockData = clockData.conditions
+
         self.dynamicClockView.setNeedsDisplay()
+        self.staticClockView1.setNeedsDisplay()
+        self.staticClockView2.setNeedsDisplay()
         
         print("Screen update")
         
@@ -108,7 +129,25 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
         updateInfo()
         
     }
+    
+    //MARK: UIScrollViewDelegate
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        
+        let page = Int(round(scrollView.contentOffset.x / scrollView.frame.width))
+        
+        pageControl.currentPage = page
+    }
 
+    @IBAction func pageControlAction(sender: UIPageControl) {
+        
+        let page = sender.currentPage
+        let width = scrollView.frame.width
+        let heigth = scrollView.frame.height
+        
+        scrollView.scrollRectToVisible(CGRect(x: width * CGFloat(page), y: 0, width: width, height: heigth), animated: true)
+        
+    }
     
 }
 

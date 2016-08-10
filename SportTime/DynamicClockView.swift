@@ -8,7 +8,6 @@
 
 import UIKit
 
-@IBDesignable
 class DynamicClockView: ClockView {
     
     override func drawRect(rect: CGRect) {

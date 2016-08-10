@@ -36,18 +36,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cPB-as-i1F" customClass="DynamicClockView" customModule="SportTime" customModuleProvider="target">
-                                <rect key="frame" x="19" y="72" width="337" height="337"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="cPB-as-i1F" secondAttribute="height" multiplier="1:1" id="EOc-dO-aGY"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="arrow" value="arrow"/>
-                                </userDefinedRuntimeAttributes>
-                            </view>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="f5V-TJ-hx7">
+                                <rect key="frame" x="168" y="447" width="39" height="37"/>
+                                <connections>
+                                    <action selector="pageControlAction:" destination="JKZ-Vt-ffi" eventType="valueChanged" id="Xo9-zi-RcB"/>
+                                </connections>
+                            </pageControl>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="khj-fs-sUb">
-                                <rect key="frame" x="10" y="449" width="355" height="133"/>
+                                <rect key="frame" x="10" y="492" width="355" height="133"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rain" translatesAutoresizingMaskIntoConstraints="NO" id="Nkv-dz-ScJ">
                                         <rect key="frame" x="0.0" y="13" width="107" height="107"/>
@@ -152,22 +148,31 @@
                                     <constraint firstAttribute="bottomMargin" secondItem="eyr-hg-VKx" secondAttribute="bottom" id="Xb0-bg-GVu"/>
                                 </constraints>
                             </stackView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u84-Vl-4KM">
+                                <rect key="frame" x="0.0" y="72" width="375" height="375"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="u84-Vl-4KM" secondAttribute="height" multiplier="1:1" id="Wkl-gs-kja"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="JKZ-Vt-ffi" id="eFd-mE-puJ"/>
+                                </connections>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="f5V-TJ-hx7" firstAttribute="top" secondItem="u84-Vl-4KM" secondAttribute="bottom" id="EBb-zY-r6S"/>
                             <constraint firstItem="khj-fs-sUb" firstAttribute="leading" secondItem="Jlh-6N-FMe" secondAttribute="leading" constant="10" id="Gh2-E3-wyo"/>
-                            <constraint firstItem="khj-fs-sUb" firstAttribute="top" secondItem="cPB-as-i1F" secondAttribute="bottom" constant="40" id="NPB-1w-Uq2"/>
-                            <constraint firstItem="cPB-as-i1F" firstAttribute="width" secondItem="Jlh-6N-FMe" secondAttribute="width" multiplier="0.9" id="QfG-lT-Qtu"/>
+                            <constraint firstItem="f5V-TJ-hx7" firstAttribute="centerX" secondItem="Jlh-6N-FMe" secondAttribute="centerX" id="OoS-r2-XkY"/>
+                            <constraint firstItem="u84-Vl-4KM" firstAttribute="top" secondItem="a2V-uP-7AH" secondAttribute="bottom" constant="8" id="RoI-8k-vuQ"/>
                             <constraint firstItem="khj-fs-sUb" firstAttribute="height" secondItem="Jlh-6N-FMe" secondAttribute="height" multiplier="0.2" id="Sc9-Ar-4Tb"/>
-                            <constraint firstItem="cPB-as-i1F" firstAttribute="centerX" secondItem="Jlh-6N-FMe" secondAttribute="centerX" id="V1V-b5-2Ws"/>
                             <constraint firstItem="PgW-Y6-WE5" firstAttribute="top" secondItem="khj-fs-sUb" secondAttribute="bottom" constant="20" id="Xjj-J7-VYg"/>
+                            <constraint firstItem="u84-Vl-4KM" firstAttribute="centerX" secondItem="Jlh-6N-FMe" secondAttribute="centerX" id="Xmy-Ch-hFA"/>
+                            <constraint firstItem="u84-Vl-4KM" firstAttribute="width" secondItem="Jlh-6N-FMe" secondAttribute="width" id="aRl-9d-5f0"/>
                             <constraint firstAttribute="trailing" secondItem="khj-fs-sUb" secondAttribute="trailing" constant="10" id="aZM-dw-a2l"/>
-                            <constraint firstItem="cPB-as-i1F" firstAttribute="height" secondItem="Jlh-6N-FMe" secondAttribute="height" multiplier="0.5" id="d6t-lt-n0G"/>
-                            <constraint firstItem="cPB-as-i1F" firstAttribute="top" secondItem="a2V-uP-7AH" secondAttribute="bottom" constant="8" id="yXw-VL-69B"/>
+                            <constraint firstItem="khj-fs-sUb" firstAttribute="top" secondItem="f5V-TJ-hx7" secondAttribute="bottom" constant="8" id="p3V-AX-c2l"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="d6t-lt-n0G"/>
                                 <exclude reference="Xjj-J7-VYg"/>
                             </mask>
                         </variation>
@@ -182,7 +187,8 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="dynamicClockView" destination="cPB-as-i1F" id="lTT-u8-UpT"/>
+                        <outlet property="pageControl" destination="f5V-TJ-hx7" id="T6f-2s-OPV"/>
+                        <outlet property="scrollView" destination="u84-Vl-4KM" id="ura-Ll-3gp"/>
                         <outlet property="weatherIcon" destination="Nkv-dz-ScJ" id="4Jw-1y-GWf"/>
                         <outletCollection property="weatherLabels" destination="22R-RF-Zla" collectionClass="NSMutableArray" id="yC9-k9-Rqj"/>
                         <outletCollection property="weatherLabels" destination="Gbw-Y1-NOC" collectionClass="NSMutableArray" id="gqM-Ba-LTa"/>
@@ -725,7 +731,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow" width="256" height="256"/>
         <image name="hum" width="512" height="512"/>
         <image name="rain" width="128" height="128"/>
         <image name="temp" width="512" height="512"/>
