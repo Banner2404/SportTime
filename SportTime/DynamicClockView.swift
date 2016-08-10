@@ -12,7 +12,7 @@ import UIKit
 class DynamicClockView: ClockView {
     
     override func drawRect(rect: CGRect) {
-        
+        super.drawRect(rect)
         drawClock()
         drawLabels()
         drawMarks()

@@ -11,6 +11,14 @@ import UIKit
 class StaticClockView: ClockView {
 
     override func drawRect(rect: CGRect) {
+        super.drawRect(rect)
+        day += 1
+        hour = 12
+        
+        drawClock()
+        drawLabels()
+        drawMarks()
+        drawPins()
         
     }
 

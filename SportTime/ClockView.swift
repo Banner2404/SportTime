@@ -288,7 +288,7 @@ class ClockView: UIView {
 
     
     func getIndexForDay(day: Int, andHour hour: Int, inClockData data: [ClockData.HourlyInfo]?) -> Int? {
-        
+
         var day = day
         var hour = hour
         
@@ -317,6 +317,19 @@ class ClockView: UIView {
             }
             
         }
+        
+        // incorrect day
+        i = 0
+        for element in data! {
+            
+            if element.time == hour {
+                return i
+            } else {
+                i += 1
+            }
+            
+        }
+
         return nil
         
     }
