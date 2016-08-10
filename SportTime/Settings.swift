@@ -68,6 +68,16 @@ class Settings: NSObject {
     
     func getStateForKey(key: String, andValue value: Int) -> ClockData.ParamState {
         
+        if key == Settings.timeID {
+            
+            if value >= time.min && value < time.max {
+                return .Good
+            } else {
+                return .Bad
+            }
+        }
+        
+        
         let arr = active + passive
         let filtered = arr.filter { $0.identifier == key }
         if filtered.isEmpty {
@@ -78,8 +88,9 @@ class Settings: NSObject {
         
         if value >= params.min && value <= params.max {
             return .Good
-        }
+        } else {
             return .Bad
+        }
         
     }
     

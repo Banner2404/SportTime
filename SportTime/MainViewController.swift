@@ -35,6 +35,21 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
         // Dispose of any resources that can be recreated.
     }
     
+    private func updateInfo() {
+        
+        let clockData = ClockData(weather: weather.cachedData)
+        
+        self.dynamicClockView.clockData = clockData.conditions
+        
+        self.dynamicClockView.setNeedsDisplay()
+        
+        print("Screen update")
+        
+        let (day, hour, _) = NSDate.getTime()
+        
+        weather.getWeatherInfoForDay(day, hour: hour)
+    }
+    
     //MARK: WeatherDelegate
     
     func didUpdateWeatherInfo(info: Weather.WeatherData) {
@@ -83,32 +98,14 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
     
     func didUpdateWeather() {
         
-        let clockData = ClockData(weather: weather.cachedData)
-        
-        self.dynamicClockView.clockData = clockData.conditions
-        
-        self.dynamicClockView.setNeedsDisplay()
-        
-        print("Screen update")
-        //TODO: dynamic time
-        weather.getWeatherInfoFor(20)
-        
+        updateInfo()
     }
     
     //MARK: SettingsUpdateDelegate
     
     func didUpdateSettings() {
         
-        let clockData = ClockData(weather: weather.cachedData)
-        
-        self.dynamicClockView.clockData = clockData.conditions
-        
-        self.dynamicClockView.setNeedsDisplay()
-        
-        print("Screen update")
-        
-        weather.getWeatherInfoFor(20)
-
+        updateInfo()
         
     }
 
@@ -117,16 +114,16 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
 
 extension NSDate {
     
-    class func getTime() -> (h: Int, m: Int) {
+    class func getTime() -> (d: Int, h: Int, m: Int) {
         
         let date = NSDate.init(timeIntervalSinceNow: 0)
         let calendar = NSCalendar.currentCalendar()
-        let unit: NSCalendarUnit = [.Hour, .Minute]
+        let unit: NSCalendarUnit = [.Day, .Hour, .Minute]
         let comp = calendar.components(unit, fromDate: date)
         
         
         
-        return (comp.hour, comp.minute)
+        return (comp.day, comp.hour, comp.minute)
     }
     
 }

@@ -39,10 +39,6 @@ class Weather: NSObject {
             if self.delegate != nil {
                 self.delegate!.didUpdateWeather()
                 
-//                self.loadImageFrom(self.cachedData[0], onSuccess: { image in
-//                    self.delegate?.didUpdateWeatherImage(image)
-//                })
-                
             }
             
         }
@@ -50,14 +46,14 @@ class Weather: NSObject {
         
     }
     
-    func getWeatherInfoFor(hour: Int) {
+    func getWeatherInfoForDay(day: Int, hour: Int) {
         
-        let filtered = cachedData.filter { $0.time == hour }
+        let filtered = cachedData.filter { $0.time == hour && $0.day == day }
         if !filtered.isEmpty {
             let info = filtered[0]
-            
+            let image = getImageForCode(info.imageCode)
             delegate?.didUpdateWeatherInfo(info)
-
+            delegate?.didUpdateWeatherImage(image)
         }
         
     }
@@ -89,17 +85,30 @@ class Weather: NSObject {
     
     //MARK: - Parsing
 
-//    private func getImageForCode(code: Int) -> UIImage {
-//        
-//        switch code {
-//        case 1:
-//            <#code#>
-//        default:
-//            <#code#>
-//        }
-//        
-//
-//    }
+    private func getImageForCode(code: Int) -> UIImage {
+        
+        var image = UIImage()
+        
+        switch code {
+        case 1, 5, 6, 17:
+            image = UIImage(named: "clear")!
+        case 2, 3, 7, 8:
+            image = UIImage(named: "partly cloudly")!
+        case 4:
+            image = UIImage(named: "cloudly")!
+        case 9, 16, 18, 19, 20, 21, 22, 23, 24:
+            image = UIImage(named: "snow")!
+        case 10, 11, 12, 13:
+            image = UIImage(named: "rain")!
+        case 14, 15:
+            image = UIImage(named: "thunderstorm")!
+        default:
+            break
+        }
+        
+        return image
+        
+    }
     
     private func getDataFrom(json: JSON) -> [WeatherData]  {
         
@@ -109,13 +118,14 @@ class Weather: NSObject {
             
             let imageCode = json["hourly_forecast"][i]["fctcode"].intValue
             let time = json["hourly_forecast"][i]["FCTTIME"]["hour"].intValue
+            let day = json["hourly_forecast"][i]["FCTTIME"]["mday"].intValue
             let temp = json["hourly_forecast"][i]["temp"]["metric"].intValue
             let wind = json["hourly_forecast"][i]["wspd"]["metric"].intValue
             let rain = json["hourly_forecast"][i]["pop"].intValue
             let humidity = json["hourly_forecast"][i]["humidity"].intValue
             let sky = json["hourly_forecast"][i]["sky"].intValue
             
-            let weather = WeatherData(imageCode: imageCode, time: time, temperature: temp,
+            let weather = WeatherData(imageCode: imageCode, time: time, day: day, temperature: temp,
                                       windSpeed: wind, rainChanse: rain,
                                       humidity: humidity, sky: sky)
             
@@ -156,6 +166,7 @@ extension Weather {
         
         var imageCode: Int
         var time: Int
+        var day: Int
         var temperature: Int
         var windSpeed: Int
         var rainChanse: Int

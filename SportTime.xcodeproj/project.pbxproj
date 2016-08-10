@@ -12,12 +12,14 @@
 		D13A8FD31D536182004C6769 /* ParametersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13A8FD21D536182004C6769 /* ParametersViewController.swift */; };
 		D188D1631D54AF9A001D0102 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188D1621D54AF9A001D0102 /* MainViewController.swift */; };
 		D188D1651D54B093001D0102 /* ClockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D188D1641D54B093001D0102 /* ClockData.swift */; };
+		D1ABF95C1D5B7B7C0022A420 /* StaticClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1ABF95B1D5B7B7C0022A420 /* StaticClockView.swift */; };
 		D1D8A5261D51DF87004CFB3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D8A5251D51DF87004CFB3C /* AppDelegate.swift */; };
 		D1D8A52B1D51DF87004CFB3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1D8A5291D51DF87004CFB3C /* Main.storyboard */; };
-		D1D8A52D1D51DF87004CFB3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1D8A52C1D51DF87004CFB3C /* Assets.xcassets */; };
 		D1D8A5301D51DF87004CFB3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D1D8A52E1D51DF87004CFB3C /* LaunchScreen.storyboard */; };
 		D1D8A5381D51E1C9004CFB3C /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D8A5371D51E1C9004CFB3C /* Weather.swift */; };
 		D1E686571D54E51D0098A33E /* DynamicClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E686561D54E51D0098A33E /* DynamicClockView.swift */; };
+		D1E686591D5B38040098A33E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1E686581D5B38040098A33E /* Assets.xcassets */; };
+		D1E6865B1D5B52120098A33E /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1E6865A1D5B52120098A33E /* ClockView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,14 +29,16 @@
 		D13A8FD21D536182004C6769 /* ParametersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParametersViewController.swift; sourceTree = "<group>"; };
 		D188D1621D54AF9A001D0102 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		D188D1641D54B093001D0102 /* ClockData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClockData.swift; sourceTree = "<group>"; };
+		D1ABF95B1D5B7B7C0022A420 /* StaticClockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticClockView.swift; sourceTree = "<group>"; };
 		D1D8A5221D51DF87004CFB3C /* SportTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SportTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1D8A5251D51DF87004CFB3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D1D8A52A1D51DF87004CFB3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D1D8A52C1D51DF87004CFB3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D1D8A52F1D51DF87004CFB3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D1D8A5311D51DF87004CFB3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D1D8A5371D51E1C9004CFB3C /* Weather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		D1E686561D54E51D0098A33E /* DynamicClockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicClockView.swift; sourceTree = "<group>"; };
+		D1E686581D5B38040098A33E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D1E6865A1D5B52120098A33E /* ClockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
 		D21BFE701A7B6759127B8D24 /* Pods-SportTime.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SportTime.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SportTime/Pods-SportTime.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,12 +96,14 @@
 				D1D8A5371D51E1C9004CFB3C /* Weather.swift */,
 				D13A8FD01D527849004C6769 /* Settings.swift */,
 				D188D1641D54B093001D0102 /* ClockData.swift */,
+				D1E6865A1D5B52120098A33E /* ClockView.swift */,
 				D1E686561D54E51D0098A33E /* DynamicClockView.swift */,
+				D1ABF95B1D5B7B7C0022A420 /* StaticClockView.swift */,
 				D188D1621D54AF9A001D0102 /* MainViewController.swift */,
 				D13A8FD21D536182004C6769 /* ParametersViewController.swift */,
 				D1D8A5291D51DF87004CFB3C /* Main.storyboard */,
-				D1D8A52C1D51DF87004CFB3C /* Assets.xcassets */,
 				D1D8A52E1D51DF87004CFB3C /* LaunchScreen.storyboard */,
+				D1E686581D5B38040098A33E /* Assets.xcassets */,
 				D1D8A5311D51DF87004CFB3C /* Info.plist */,
 			);
 			path = SportTime;
@@ -166,7 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1D8A5301D51DF87004CFB3C /* LaunchScreen.storyboard in Resources */,
-				D1D8A52D1D51DF87004CFB3C /* Assets.xcassets in Resources */,
+				D1E686591D5B38040098A33E /* Assets.xcassets in Resources */,
 				D1D8A52B1D51DF87004CFB3C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -227,6 +233,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D188D1651D54B093001D0102 /* ClockData.swift in Sources */,
+				D1E6865B1D5B52120098A33E /* ClockView.swift in Sources */,
+				D1ABF95C1D5B7B7C0022A420 /* StaticClockView.swift in Sources */,
 				D1E686571D54E51D0098A33E /* DynamicClockView.swift in Sources */,
 				D1D8A5381D51E1C9004CFB3C /* Weather.swift in Sources */,
 				D13A8FD31D536182004C6769 /* ParametersViewController.swift in Sources */,

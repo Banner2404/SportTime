@@ -50,6 +50,7 @@ class ClockData: NSObject {
             let rel = Double(score) / Double(maxScore)
             let time = hour.time >= settings.time.min && hour.time < settings.time.max ? true : false
             var info = HourlyInfo()
+            info.day = hour.day
             info.time = hour.time
             
             switch rel {
@@ -69,6 +70,7 @@ class ClockData: NSObject {
     }
     
     struct HourlyInfo {
+        var day = 0
         var time = 0
         var state = HourlyState.Good(inTime: true)
     }
