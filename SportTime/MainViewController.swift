@@ -20,6 +20,8 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
     var dynamicClockView: DynamicClockView!
     var staticClockView1: StaticClockView!
     var staticClockView2: StaticClockView!
+    var height: CGFloat = 0
+    var width: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +30,8 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
         
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.orangeColor()]
         navigationController?.navigationBar.tintColor = UIColor.orangeColor()
-        let height = scrollView.frame.height
-        let width = scrollView.frame.width
+        height = scrollView.frame.height
+        width = scrollView.frame.width
         
         dynamicClockView = DynamicClockView(frame: CGRect(x: 0, y: 0, width: width, height: height))
         staticClockView1 = StaticClockView(frame: CGRect(x: width, y: 0, width: width, height: height))
@@ -142,13 +144,25 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
     @IBAction func pageControlAction(sender: UIPageControl) {
         
         let page = sender.currentPage
-        let width = scrollView.frame.width
-        let heigth = scrollView.frame.height
         
-        scrollView.scrollRectToVisible(CGRect(x: width * CGFloat(page), y: 0, width: width, height: heigth), animated: true)
+        scrollView.scrollRectToVisible(CGRect(x: width * CGFloat(page), y: 0, width: width, height: height), animated: true)
         
     }
     
+    @IBAction func showFirstClockAction(sender: UITapGestureRecognizer) {
+        
+        let p1 = sender.locationInView(view)
+        let p2 = scrollView.center
+        
+        let xDist = p1.x - p2.x
+        let yDist = p1.y - p2.y
+        let dist = sqrt((xDist * xDist) + (yDist * yDist))
+        
+        if dist < 100 {
+            scrollView.scrollRectToVisible(CGRect(x: 0, y: 0, width: width, height: height), animated: true)
+        }
+        
+    }
 }
 
 extension NSDate {
