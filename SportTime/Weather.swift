@@ -38,10 +38,27 @@ class Weather: NSObject {
             
             if self.delegate != nil {
                 self.delegate!.didUpdateWeather()
+                
+//                self.loadImageFrom(self.cachedData[0], onSuccess: { image in
+//                    self.delegate?.didUpdateWeatherImage(image)
+//                })
+                
             }
             
         }
 
+        
+    }
+    
+    func getWeatherInfoFor(hour: Int) {
+        
+        let filtered = cachedData.filter { $0.time == hour }
+        if !filtered.isEmpty {
+            let info = filtered[0]
+            
+            delegate?.didUpdateWeatherInfo(info)
+
+        }
         
     }
     
@@ -72,12 +89,25 @@ class Weather: NSObject {
     
     //MARK: - Parsing
 
+//    private func getImageForCode(code: Int) -> UIImage {
+//        
+//        switch code {
+//        case 1:
+//            <#code#>
+//        default:
+//            <#code#>
+//        }
+//        
+//
+//    }
+    
     private func getDataFrom(json: JSON) -> [WeatherData]  {
         
         var data = [WeatherData]()
 
         for i in 0..<48 {
             
+            let imageCode = json["hourly_forecast"][i]["fctcode"].intValue
             let time = json["hourly_forecast"][i]["FCTTIME"]["hour"].intValue
             let temp = json["hourly_forecast"][i]["temp"]["metric"].intValue
             let wind = json["hourly_forecast"][i]["wspd"]["metric"].intValue
@@ -85,7 +115,7 @@ class Weather: NSObject {
             let humidity = json["hourly_forecast"][i]["humidity"].intValue
             let sky = json["hourly_forecast"][i]["sky"].intValue
             
-            let weather = WeatherData(time: time, temperature: temp,
+            let weather = WeatherData(imageCode: imageCode, time: time, temperature: temp,
                                       windSpeed: wind, rainChanse: rain,
                                       humidity: humidity, sky: sky)
             
@@ -115,6 +145,8 @@ class Weather: NSObject {
 protocol WeatherDelegate: class {
     
     func didUpdateWeather()
+    func didUpdateWeatherImage(image: UIImage)
+    func didUpdateWeatherInfo(info: Weather.WeatherData)
     
 }
 
@@ -122,6 +154,7 @@ extension Weather {
     
     struct WeatherData {
         
+        var imageCode: Int
         var time: Int
         var temperature: Int
         var windSpeed: Int

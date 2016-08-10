@@ -66,6 +66,23 @@ class Settings: NSObject {
         
     }
     
+    func getStateForKey(key: String, andValue value: Int) -> ClockData.ParamState {
+        
+        let arr = active + passive
+        let filtered = arr.filter { $0.identifier == key }
+        if filtered.isEmpty {
+            return .Good
+        }
+        
+        let params = filtered[0]
+        
+        if value >= params.min && value <= params.max {
+            return .Good
+        }
+            return .Bad
+        
+    }
+    
     //MARK - Save/Load
     
     private func saveSettings() {

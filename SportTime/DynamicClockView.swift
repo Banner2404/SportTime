@@ -16,17 +16,18 @@ class DynamicClockView: UIView {
     @IBInspectable var arrow: UIImage?
     
     let boundsInset = CGFloat(40)
-    var goodColor = UIColor.greenColor().CGColor
+    var goodColor = UIColor(red: 0, green: 234.0 / 255, blue: 147.0 / 255, alpha: 1).CGColor
     var mediumColor = UIColor.orangeColor().CGColor
-    var badColor = UIColor.redColor().CGColor
+    var badColor = UIColor(red: 1, green: 36.0 / 255, blue: 0, alpha: 1).CGColor
+    var orangeColor = UIColor(red: 1, green: 85.0 / 255, blue: 0, alpha: 1)
     
-    var lightGoodColor = UIColor.greenColor().colorWithAlphaComponent(0.4).CGColor
-    var lightMediumColor = UIColor.orangeColor().colorWithAlphaComponent(0.4).CGColor
-    var lightBadColor = UIColor.redColor().colorWithAlphaComponent(0.4).CGColor
+    var lightGoodColor = UIColor(red: 0, green: 234.0 / 255, blue: 147.0 / 255, alpha: 0.4).CGColor
+    var lightMediumColor = UIColor(red: 1, green: 85.0 / 255, blue: 0, alpha: 0.4).CGColor
+    var lightBadColor = UIColor(red: 238.0 / 255, green: 36.0 / 255, blue: 0, alpha: 0.4).CGColor
     var emptyColor = UIColor.darkGrayColor().CGColor
     
     var clockData: [ClockData.HourlyInfo]?
-    let width = CGFloat(30.0)
+    let width = CGFloat(60.0)
     let startAngle = -CGFloat(M_PI / 2)
     let deltaAngle = CGFloat(M_PI / 6)
     
@@ -38,7 +39,7 @@ class DynamicClockView: UIView {
         let radius = rect.width / 2 - width / 2 - boundsInset
         let center = CGPoint(x: rect.width / 2, y: rect.height / 2)
         
-        let time = getTime().h
+        let time = NSDate.getTime().h
         self.startingTime = time
         let i = getIndexForTime(time, inClockData: clockData)
         
@@ -102,34 +103,68 @@ class DynamicClockView: UIView {
     
     func drawLabels(rect: CGRect) {
         
-
         for i in startingTime..<(startingTime + 12) {
             
             let index = i > 11 ? i - 12 : i
             
             let angle = startAngle + CGFloat(index) * deltaAngle
+            let labelSize = CGSize(width: 30, height: 30)
+
+            
             let context = UIGraphicsGetCurrentContext()
             CGContextSaveGState(context)
-            let labelSize = CGSize(width: 20, height: 20)
+            
             let labelPoint = CGPoint(x: -labelSize.width / 2, y: -labelSize.height / 2)
             
             let labelRect = CGRect(origin: labelPoint, size: labelSize)
             
-            CGContextTranslateCTM(context, rect.width / 2, rect.height / 2)
-            CGContextRotateCTM(context, angle)
-            CGContextTranslateCTM(context, 150, 0)
-            CGContextRotateCTM(context, -angle)
-            
-            
-            let time = i > 23 ? i - 24 : i
-            let label: NSString = "\(time)"
-            
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = .Center
             
-            let attrs = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 15)!, NSParagraphStyleAttributeName: paragraphStyle, NSForegroundColorAttributeName: UIColor.whiteColor()]
+            let attrs = [NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 18)!, NSParagraphStyleAttributeName: paragraphStyle, NSForegroundColorAttributeName: UIColor.whiteColor()]
+            
+            if i == startingTime {
+                
+                let delta = CGFloat(M_PI) / 25
+                
+                CGContextTranslateCTM(context, rect.width / 2, rect.height / 2)
+                CGContextRotateCTM(context, angle + delta)
+                CGContextTranslateCTM(context, 150, 0)
+                CGContextRotateCTM(context, -(angle + delta))
+                
+                var time = i > 23 ? i - 24 : i
+                var label: NSString = "\(time)"
+                
+                label.drawInRect(labelRect, withAttributes: attrs)
+                CGContextRestoreGState(context)
+                
+                CGContextSaveGState(context)
+                CGContextTranslateCTM(context, rect.width / 2, rect.height / 2)
+                CGContextRotateCTM(context, angle - delta)
+                CGContextTranslateCTM(context, 150, 0)
+                CGContextRotateCTM(context, -(angle - delta))
+                
+                time = i + 12 > 23 ? i - 12 : i + 12
+                label = "\(time)"
+                
+                label.drawInRect(labelRect, withAttributes: attrs)
 
-            label.drawInRect(labelRect, withAttributes: attrs)
+
+                
+            } else {
+                
+                CGContextTranslateCTM(context, rect.width / 2, rect.height / 2)
+                CGContextRotateCTM(context, angle)
+                CGContextTranslateCTM(context, 150, 0)
+                CGContextRotateCTM(context, -angle)
+                
+                let time = i > 23 ? i - 24 : i
+                let label: NSString = "\(time)"
+                
+                label.drawInRect(labelRect, withAttributes: attrs)
+            }
+            
+            
             
             CGContextRestoreGState(context)
             
@@ -145,17 +180,30 @@ class DynamicClockView: UIView {
         let radius = rect.width / 2 - width / 2 - boundsInset
         let center = CGPoint(x: rect.width / 2, y: rect.height / 2)
         let start = radius - width / 2
-        let angle = CGFloat(M_PI) / 6
+        let t = NSDate.getTime().h
+        let time = t < 12 ? t : t - 12
         
         for i in 0..<12 {
             
             CGContextSaveGState(context)
             CGContextSetStrokeColorWithColor(context, UIColor.whiteColor().CGColor)
-            CGContextSetLineWidth(context, 2)
             CGContextTranslateCTM(context, center.x, center.y)
-            CGContextRotateCTM(context, angle * CGFloat(i))
-            CGContextMoveToPoint(context, start, 0)
-            CGContextAddLineToPoint(context, start + width, 0)
+            CGContextRotateCTM(context, startAngle + (deltaAngle * CGFloat(i)))
+            
+            if i == time {
+                CGContextMoveToPoint(context, start - 8, 0)
+                CGContextAddLineToPoint(context, start + width + 25, 0)
+                CGContextSetLineCap(context, CGLineCap.Round)
+                CGContextSetLineWidth(context, 3)
+
+            } else {
+                CGContextMoveToPoint(context, start + width - 8, 0)
+                CGContextAddLineToPoint(context, start + width + 8, 0)
+                CGContextSetLineWidth(context, 2)
+
+            }
+            
+            
             
             CGContextStrokePath(context)
             
@@ -167,11 +215,16 @@ class DynamicClockView: UIView {
         CGContextAddArc(context, center.x, center.y, radius + width / 2, 0, CGFloat(M_PI * 2), 0)
         CGContextStrokePath(context)
 
-        CGContextSetLineWidth(context, 2)
+        CGContextSetLineWidth(context, 3)
         CGContextAddArc(context, center.x, center.y, radius - width / 2, 0, CGFloat(M_PI * 2), 0)
         
         CGContextStrokePath(context)
-
+        
+        CGContextSetLineWidth(context, 3)
+        CGContextAddArc(context, center.x, center.y, 18, 0, CGFloat(M_PI * 2), 0)
+        CGContextSetFillColorWithColor(context, UIColor.whiteColor().CGColor)
+        
+        CGContextFillPath(context)
         
         
     }
@@ -179,7 +232,7 @@ class DynamicClockView: UIView {
     func drawArrow(rect: CGRect) {
         
         let context = UIGraphicsGetCurrentContext()
-        let (hours, minutes) = getTime()
+        let (hours, minutes) = NSDate.getTime()
         
         let deltaHours = CGFloat(M_PI / 6)
         let deltaMinutes = CGFloat(M_PI / 360)
@@ -194,18 +247,6 @@ class DynamicClockView: UIView {
     
         arrow?.drawInRect(arrowRect)
         
-    }
-    
-    func getTime() -> (h: Int, m: Int) {
-        
-        let date = NSDate.init(timeIntervalSinceNow: 0)
-        let calendar = NSCalendar.currentCalendar()
-        let unit: NSCalendarUnit = [.Hour, .Minute]
-        let comp = calendar.components(unit, fromDate: date)
-        
-        
-        
-        return (comp.hour, comp.minute)
     }
     
     func getIndexForTime(time: Int, inClockData data: [ClockData.HourlyInfo]?) -> Int? {

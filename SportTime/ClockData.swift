@@ -28,26 +28,16 @@ class ClockData: NSObject {
                 var points: ParamState
                 
                 switch params.identifier {
-                case Settings.tempID where (hour.temperature >= params.min) && (hour.temperature <= params.max):
-                    points = .Good
                 case Settings.tempID:
-                    points = .Bad
-                case Settings.windID where (hour.windSpeed >= params.min) && (hour.windSpeed <= params.max):
-                    points = .Good
+                    points = settings.getStateForKey(params.identifier, andValue: hour.temperature)
                 case Settings.windID:
-                    points = .Bad
-                case Settings.rainID where (hour.rainChanse >= params.min) && (hour.rainChanse <= params.max):
-                    points = .Good
+                    points = settings.getStateForKey(params.identifier, andValue: hour.windSpeed)
                 case Settings.rainID:
-                    points = .Bad
-                case Settings.humidityID where (hour.humidity >= params.min) && (hour.humidity <= params.max):
-                    points = .Good
+                    points = settings.getStateForKey(params.identifier, andValue: hour.rainChanse)
                 case Settings.humidityID:
-                    points = .Bad
-                case Settings.skyID where (hour.sky >= params.min) && (hour.sky <= params.max):
-                    points = .Good
+                    points = settings.getStateForKey(params.identifier, andValue: hour.humidity)
                 case Settings.skyID:
-                    points = .Bad
+                    points = settings.getStateForKey(params.identifier, andValue: hour.sky)
                 default:
                     points = .Good
                 }
