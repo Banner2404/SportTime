@@ -22,7 +22,7 @@ class Weather: NSObject, CLLocationManagerDelegate {
     static let sharedWeather = Weather()
     
     func refresh() {
-        
+        location = nil
         locationManager = CLLocationManager()
         locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
         locationManager.delegate = self

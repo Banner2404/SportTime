@@ -14,7 +14,7 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var weatherLabels: [UILabel]!
     @IBOutlet weak var pageControl: UIPageControl!
-
+    
     let weather = Weather.sharedWeather
     let settings = Settings.sharedSettings
     var dynamicClockView: DynamicClockView!
@@ -44,9 +44,8 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
         scrollView.addSubview(staticClockView2)
         
         scrollView.contentSize = CGSizeMake(width * 3, height)
-        
-        weather.refresh()
-        settings.update()
+        refreshAction()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -122,6 +121,9 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
     func didUpdateWeather() {
         
         updateInfo()
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: #selector(refreshAction))
+        
     }
     
     //MARK: SettingsUpdateDelegate
@@ -163,6 +165,16 @@ class MainViewController: UIViewController, WeatherDelegate, SettingsUpdateDeleg
         }
         
     }
+    func refreshAction() {
+        
+        weather.refresh()
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
+        indicator.frame = CGRect(x: 0, y: 0, width: 20, height: 20)
+        indicator.startAnimating()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: indicator)
+        
+    }
+    
 }
 
 extension NSDate {
