@@ -9,9 +9,12 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import CoreLocation
 
-class Weather: NSObject {
+class Weather: NSObject, CLLocationManagerDelegate {
     
+    var locationManager: CLLocationManager!
+    var location: CLLocation?
     var data =  [WeatherData]()
     var cachedData = [WeatherData]()
     weak var delegate: WeatherDelegate?
@@ -20,29 +23,10 @@ class Weather: NSObject {
     
     func refresh() {
         
-        self.getHourlyWeather { [unowned self] json in
-            
-            
-            self.cachedData = self.getDataFrom(json) //TODO: make caching
-            
-//            for i in 0...30 {
-//                
-//                print("time = \(self.cachedData[i].time), " +
-//                    "temp = \(self.cachedData[i].temperature)," +
-//                    "wind = \(self.cachedData[i].windSpeed)," +
-//                    "rain = \(self.cachedData[i].rainChanse)," +
-//                    "hum = \(self.cachedData[i].humidity)," +
-//                    "sky = \(self.cachedData[i].sky),")
-//                
-//            }
-            
-            if self.delegate != nil {
-                self.delegate!.didUpdateWeather()
-                
-            }
-            
-        }
-
+        locationManager = CLLocationManager()
+        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        locationManager.delegate = self
+        checkLocationAuthorization()
         
     }
     
@@ -61,9 +45,14 @@ class Weather: NSObject {
     //MARK: - Getting data from server
     
     
-    private func getHourlyWeather(onSuccess: (JSON) -> ()) {
+    private func getHourlyWeatherForLocation(location: CLLocation, onSuccess: (JSON) -> ()) {
         
-        let urlString = "http://api.wunderground.com/api/892b2fb5ca02a3b4/hourly10day/lang:RU/q/52.7,25.3.json"
+        let latStr = "\(location.coordinate.latitude)"
+        let longStr = "\(location.coordinate.longitude)"
+        let coord = latStr + "," + longStr + ".json"
+        let baseUrlString = "http://api.wunderground.com/api/892b2fb5ca02a3b4/hourly10day/lang:RU/q/"
+        let urlString = baseUrlString + coord
+        print(urlString)
         
         Alamofire.request(.GET, urlString).responseJSON { response in
             
@@ -148,6 +137,51 @@ class Weather: NSObject {
             w[0].time += 24
         }
         return w
+    }
+    
+    private func checkLocationAuthorization() {
+    
+        switch CLLocationManager.authorizationStatus() {
+        case .AuthorizedWhenInUse:
+            locationManager.startUpdatingLocation()
+        case .NotDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .Restricted:
+            print("location usage restricted")
+        default:
+            break
+        }
+        
+    }
+    
+    //MARK: CLLocationManagerDelegate
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse {
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        let newLocation = locations.last
+        
+        if location == nil || newLocation?.distanceFromLocation(location!) > 100 {
+            self.location = newLocation
+            self.getHourlyWeatherForLocation(newLocation!) { [unowned self] json in
+                self.cachedData = self.getDataFrom(json) //TODO: make caching
+                
+                if self.delegate != nil {
+                    self.delegate!.didUpdateWeather()
+                    
+                }
+                
+            }
+
+        }
+        locationManager.stopUpdatingLocation()
+        
+
     }
     
 }
